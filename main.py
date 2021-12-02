@@ -3,14 +3,15 @@ import sqlite3
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem, QMessageBox
-from PyQt5 import uic
+from UI.main import Ui_CoffeeWindow
+from UI.addEditCoffeeForm import Ui_MainWindow
 
 
-class MyWindow(QMainWindow):
+class MyWindow(QMainWindow, Ui_CoffeeWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('main.ui', self)
-        self.connect = sqlite3.connect('coffee.sqlite')
+        self.setupUi(self)
+        self.connect = sqlite3.connect('data/coffee.sqlite')
         self.add_btn.clicked.connect(self.add_coffee)
         self.edit_btn.clicked.connect(self.edit_coffee)
         self.delete_btn.clicked.connect(self.delete_coffee)
@@ -34,10 +35,11 @@ class MyWindow(QMainWindow):
         self.tableWidget.resizeColumnsToContents()
 
     def add_coffee(self):
-        class AddCoffee(QMainWindow):
+        class AddCoffee(QMainWindow, Ui_MainWindow):
             def __init__(self, connect, main):
                 super().__init__()
-                uic.loadUi('addEditCoffeeForm.ui', self)
+                self.setupUi(self)
+                self.setWindowTitle('Добавление')
                 self.connect = connect
                 self.main = main
                 self.pushButton.clicked.connect(self.check)
@@ -79,10 +81,11 @@ class MyWindow(QMainWindow):
         self.add_coffee_.show()
 
     def edit_coffee(self):
-        class EditCoffee(QMainWindow):
+        class EditCoffee(QMainWindow, Ui_MainWindow):
             def __init__(self, connect, main, id_):
                 super().__init__()
-                uic.loadUi('addEditCoffeeForm.ui', self)
+                self.setupUi(self)
+                self.setWindowTitle('Изменение')
                 self.connect = connect
                 self.main = main
                 self.id_ = id_
